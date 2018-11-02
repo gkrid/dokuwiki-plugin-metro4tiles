@@ -18,7 +18,7 @@ class syntax_plugin_metro4tiles extends DokuWiki_Syntax_Plugin
      */
     public function getType()
     {
-        return 'FIXME: container|baseonly|formatting|substition|protected|disabled|paragraphs';
+        return 'disabled';
     }
 
     /**
@@ -26,7 +26,7 @@ class syntax_plugin_metro4tiles extends DokuWiki_Syntax_Plugin
      */
     public function getPType()
     {
-        return 'FIXME: normal|block|stack';
+        return 'normal';
     }
 
     /**
@@ -34,7 +34,7 @@ class syntax_plugin_metro4tiles extends DokuWiki_Syntax_Plugin
      */
     public function getSort()
     {
-        return FIXME;
+        return 100;
     }
 
     /**
@@ -44,14 +44,8 @@ class syntax_plugin_metro4tiles extends DokuWiki_Syntax_Plugin
      */
     public function connectTo($mode)
     {
-        $this->Lexer->addSpecialPattern('<FIXME>', $mode, 'plugin_metro4tiles');
-//        $this->Lexer->addEntryPattern('<FIXME>', $mode, 'plugin_metro4tiles');
+        $this->Lexer->addSpecialPattern('<metro.*?/>', $mode, 'plugin_metro4tiles');
     }
-
-//    public function postConnect()
-//    {
-//        $this->Lexer->addExitPattern('</FIXME>', 'plugin_metro4tiles');
-//    }
 
     /**
      * Handle matches of the metro4tiles syntax
@@ -67,7 +61,9 @@ class syntax_plugin_metro4tiles extends DokuWiki_Syntax_Plugin
     {
         $data = array();
 
-        return $data;
+        $metro = new SimpleXMLElement($match);
+
+        return current($metro->attributes());
     }
 
     /**
@@ -84,6 +80,23 @@ class syntax_plugin_metro4tiles extends DokuWiki_Syntax_Plugin
         if ($mode !== 'xhtml') {
             return false;
         }
+
+        if (!isset($data['name'])) {
+            msg('Provide name of tile set.', -1);
+            return false;
+        }
+        $name = $data['name'];
+        $path = DOKU_INC . "data/metro4tiles/cache/$name.html";
+        if (!file_exists($path)) {
+            msg("Tiles set: $name doesn't exists." , -1);
+            return false;
+        }
+        $src = DOKU_URL . 'lib/plugins/metro4tiles/iframe.php?path=' . urlencode($path);
+
+        $renderer->doc .= '<iframe  src="'.$src.'"
+                                    width="100%"
+                                    style="border:0"
+                                    onload="metro4tiles.resizeIframe(this)"></iframe>';
 
         return true;
     }
