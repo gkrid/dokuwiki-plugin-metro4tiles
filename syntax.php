@@ -86,12 +86,12 @@ class syntax_plugin_metro4tiles extends DokuWiki_Syntax_Plugin
             return false;
         }
         $name = $data['name'];
-        $path = DOKU_INC . "data/metro4tiles/cache/$name.html";
+        $path = DOKU_INC . "data/meta/metro4tiles/cache/$name.html";
         if (!file_exists($path)) {
             msg("Tiles set: $name doesn't exists." , -1);
             return false;
         }
-        $src = DOKU_URL . 'lib/plugins/metro4tiles/iframe.php?path=' . urlencode($path);
+        $src = DOKU_URL . 'lib/plugins/metro4tiles/iframe.php?name=' . urlencode($name);
 
         $renderer->doc .= '<iframe  src="'.$src.'"
                                     width="100%"

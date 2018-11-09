@@ -13,8 +13,9 @@
 <body>
 
 <?php
-    $path = $_GET['path'];
-    include $path;
+    $inc = realpath(__DIR__.'/../../..');
+    $name = str_replace('/', '', $_GET['name']);
+    include "$inc/data/meta/metro4tiles/cache/$name.html";
 ?>
 
 <!-- jQuery first, then Metro UI JS -->
