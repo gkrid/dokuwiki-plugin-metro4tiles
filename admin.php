@@ -61,13 +61,9 @@ class admin_plugin_metro4tiles extends DokuWiki_Admin_Plugin {
         return $content;
     }
 
-    /**
-     * Render HTML output, e.g. helpful text and a form
-     */
-    public function html() {
+    protected function process_input() {
         /* @var Input */
         global $INPUT;
-
 
         //load file from disk
         if ($INPUT->has('name') && !$INPUT->has('content')) {
@@ -80,16 +76,41 @@ class admin_plugin_metro4tiles extends DokuWiki_Admin_Plugin {
             }
         } elseif($INPUT->has('name') && $INPUT->has('content')) { //save content
             $name = $INPUT->str('name');
+
+            if ($name == '') {
+                msg($this->getLang('admin msg name validation empty'), -1);
+                return;
+            } elseif (!preg_match('/^\w*$/', $name)) {
+                msg($this->getLang('admin msg name validation error'), -1);
+                return;
+            }
+
+            $content = $INPUT->str('content');
             list($path, $path_cache) = $this->getTplPath($name, true);
 
-            file_put_contents($path, $INPUT->str('content'));
-            $cache = $this->parseTpl($INPUT->str('content'));
-            file_put_contents($path_cache, $cache);
+            if ($content == '') {
+                unlink($path);
+                unlink($path_cache);
 
-            $msg = sprintf($this->getLang('admin msg saved'), $name);
-            msg($msg, 1);
+                $msg = sprintf($this->getLang('admin msg removed'), $name);
+                msg($msg, 1);
+            } else {
+                file_put_contents($path, $content);
+                $cache = $this->parseTpl($content);
+                file_put_contents($path_cache, $cache);
+
+                $msg = sprintf($this->getLang('admin msg saved'), $name);
+                msg($msg, 1);
+            }
         }
+    }
 
+    /**
+     * Render HTML output, e.g. helpful text and a form
+     */
+    public function html() {
+
+        $this->process_input();
 
         $form = new \dokuwiki\Form\Form();
         $form->addElement(new \dokuwiki\Form\FieldsetOpenElement($this->getLang("admin legend add_edit")));

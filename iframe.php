@@ -13,9 +13,11 @@
 <body>
 
 <?php
-    $inc = realpath(__DIR__.'/../../..');
-    $name = str_replace('/', '', $_GET['name']);
-    include "$inc/data/meta/metro4tiles/cache/$name.html";
+    include 'path.php';
+    $name = $_GET['name'];
+    if (preg_match('/^\w*$/', $name)) {
+        include METRO4TILES_DATA_PATH . "/cache/$name.html";
+    }
 ?>
 
 <!-- jQuery first, then Metro UI JS -->
