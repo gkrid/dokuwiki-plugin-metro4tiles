@@ -40,19 +40,11 @@ class action_plugin_metro4tiles extends DokuWiki_Action_Plugin
      */
     public function handle_tpl_metaheader_output(Doku_Event $event, $param)
     {
-//        $event->data["link"][] = array (
-//            "type" => "text/css",
-//            "rel" => "stylesheet",
-//            "href" => DOKU_BASE.
-//                "lib/plugins/metro4tiles/node_modules/metro4-dist/css/metro-all.min.css",
-//        );
-//
-//        $event->data["script"][] = array (
-//            "type" => "text/javascript",
-//            "src" => DOKU_BASE.
-//                "lib/plugins/metro4tiles/node_modules/metro4-dist/js/metro.min.js",
-//            "_data" => "",
-//        );
+        $event->data["script"][] = array (
+            "type" => "text/javascript",
+            "src" => "https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.2/ace.js",
+            "_data" => "",
+        );
 
     }
 

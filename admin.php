@@ -121,6 +121,7 @@ class admin_plugin_metro4tiles extends DokuWiki_Admin_Plugin {
         $textarea = new \dokuwiki\Form\TextareaElement('content', '');
         $textarea->attr('rows', '15');
         $textarea->attr('cols', '80');
+        $textarea->id('metro4tiles__editor');
         $form->addElement($textarea);
 
         $form->addButton('', $this->getLang('admin button save'));
