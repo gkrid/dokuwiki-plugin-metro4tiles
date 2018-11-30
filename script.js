@@ -1,7 +1,7 @@
 var metro4tiles = {};
 
 metro4tiles.resizeIframe = function(iframe) {
-    iframe.height = iframe.contentWindow.document.body.scrollHeight + "px";
+
 };
 
 jQuery(function() {
@@ -19,4 +19,8 @@ jQuery(function() {
             $textarea.val(editor.getSession().getValue());
         });
     }
+
+    jQuery(".metro4tiles__iframe").load(function () {
+        this.height = this.contentWindow.document.documentElement.scrollHeight + "px";
+    });
 });

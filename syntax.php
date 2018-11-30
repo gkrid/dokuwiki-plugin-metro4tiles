@@ -98,7 +98,7 @@ class syntax_plugin_metro4tiles extends DokuWiki_Syntax_Plugin
         $renderer->doc .= '<iframe  src="'.$src.'"
                                     width="100%"
                                     style="border:0"
-                                    onload="metro4tiles.resizeIframe(this)"></iframe>';
+                                    class="metro4tiles__iframe"></iframe>';
 
         return true;
     }
